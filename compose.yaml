@@ -1,0 +1,43 @@
+services:
+  web:
+    image: php:${PHP_VERSION}
+    container_name: reparaya_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/var/www/html
+    environment:
+      STUDENT_NAME: ${STUDENT_NAME}
+    networks:
+      - reparaya_network
+
+  db:
+    image: mysql:${DB_VERSION}
+    container_name: reparaya_db
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - reparaya_network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: reparaya_pma
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+    networks:
+      - reparaya_network
+networks:
+  reparaya_network:
+    driver: bridge
+volumes:
+  db_data:
