@@ -1,6 +1,9 @@
 services:
   web:
-    image: php:${PHP_VERSION}
+    build:
+     context: .
+     args:
+      PHP_VERSION: ${PHP_VERSION}
     container_name: reparaya_web
     ports:
       - "8080:80"
@@ -22,7 +25,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
     networks:
