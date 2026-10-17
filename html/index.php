@@ -17,7 +17,7 @@
     <?php
     $servername = "db";
     $username = "reparaya_user";
-    $password = "user_secret";
+    $password = "1234jaumeuoc";
     $dbname = "reparaya_db";
 
     $conn = mysqli_connect($servername, $username, $password, $dbname);
