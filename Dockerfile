@@ -7,7 +7,7 @@ FROM php:${PHP_VERSION}
 RUN docker-php-ext-install pdo_mysql mysqli
 
 #Extensiones necesarias para Laravel y WordPress
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y zip \
     libzip-dev \
     libpng-dev \
     libjpeg-dev \

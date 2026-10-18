@@ -1,3 +1,5 @@
 .env
 html/wordpress/wp-config.php
 html/wordpress/
+#Este archivo se puede distribuir entre los miembros del equipo por otros medios (Drive, email,etc.)
+html/laravel_deploy.zip
