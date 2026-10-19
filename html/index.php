@@ -16,10 +16,9 @@
     <h3>Estado de la Base de Datos</h3>
     <?php
     $servername = "db";
-    $username = "reparaya_user";
-    $password = "1234jaumeuoc";
-    $dbname = "reparaya_db";
-
+    $username = getenv('MYSQL_USER');
+    $password = getenv('MYSQL_PASSWORD');
+    $dbname = getenv('MYSQL_DATABASE');
     $conn = mysqli_connect($servername, $username, $password, $dbname);
 
     if (!$conn) {

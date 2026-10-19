@@ -10,7 +10,10 @@ services:
     volumes:
       - ./html:/var/www/html
     environment:
-      STUDENT_NAME: ${STUDENT_NAME}  
+      STUDENT_NAME: ${STUDENT_NAME}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}  
     networks:
       - reparaya_network
 
