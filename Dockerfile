@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y zip \
     libjpeg-dev \
     libfreetype6-dev \
     libonig-dev \
-    libicu-dev \
-    unzip \
+    libicu-dev \  
+    unzip \ 
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mysqli mbstring zip gd intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/* 
