@@ -7,7 +7,7 @@ class Usuario {
     }
 
     public function obtenerTodosLosUsuarios() {
-        $consulta = "SELECT * FROM users";
+        $consulta = "SELECT * FROM usuarios";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         
