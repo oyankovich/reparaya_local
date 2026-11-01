@@ -66,5 +66,15 @@ class AuthController {
             }
         }
     }
+
+    public function logout() {
+        
+        $_SESSION = [];
+
+        session_destroy();
+
+        header("Location: ../public/index.php?ruta=login");
+        exit;
+    }
 }
 ?>

@@ -39,6 +39,12 @@ switch ($ruta) {
         $controlador = new AuthController($conexion);
         $controlador->procesarLogin();
         break;
+    
+    case 'logout':
+        require_once '../app/controllers/AuthController.php';
+        $controlador = new AuthController($conexion);
+        $controlador->logout();
+        break;
 
     default:
         echo "<h1>Error 404</h1>";
