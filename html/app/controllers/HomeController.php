@@ -1,7 +1,4 @@
 <?php
-
-require_once '../app/models/Usuario.php';
-
 class HomeController {
     private $db;
 
@@ -10,13 +7,13 @@ class HomeController {
     }
 
     public function inicio() {
-        $modeloUsuario = new Usuario($this->db);
-        $usuarios = $modeloUsuario->obtenerTodosLosUsuarios();
 
-        echo "<h3>Datos extraídos de la base de datos:</h3>";
-        echo "<pre>";
-        print_r($usuarios);
-        echo "</pre>";
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: ../public/index.php?ruta=login");
+            exit;
+        }
+
+        require_once '../views/inicio.php';
     }
 }
 ?>

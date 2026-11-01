@@ -14,7 +14,7 @@
         <label for="email">Correo electrónico:</label><br>
         <input type="email" id="email" name="email" required><br><br>
         
-        <label for="telefono">Teléfono (opcional):</label><br>
+        <label for="telefono">Teléfono:</label><br>
         <input type="text" id="telefono" name="telefono"><br><br>
 
         <label for="password">Contraseña:</label><br>

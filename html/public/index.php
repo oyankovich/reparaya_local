@@ -1,5 +1,4 @@
 <?php
-// html/public/index.php
 
 session_start();
 
@@ -21,6 +20,24 @@ switch ($ruta) {
         require_once '../app/controllers/AuthController.php';
         $controlador = new AuthController($conexion);
         $controlador->mostrarRegistro();
+        break;
+    
+    case 'procesar_registro':
+        require_once '../app/controllers/AuthController.php';
+        $controlador = new AuthController($conexion);
+        $controlador->procesarRegistro();
+        break;
+
+    case 'login':
+        require_once '../app/controllers/AuthController.php';
+        $controlador = new AuthController($conexion);
+        $controlador->mostrarLogin();
+        break;
+
+    case 'procesar_login':
+        require_once '../app/controllers/AuthController.php';
+        $controlador = new AuthController($conexion);
+        $controlador->procesarLogin();
         break;
 
     default:
