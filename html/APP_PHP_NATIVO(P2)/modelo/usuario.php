@@ -40,6 +40,28 @@ class Usuario {
 
         return false;
     }
+
+    public function login($email_buscado) {
+
+    //Preparamos consulta SQL con 'SELECT *' para cuando el controlador haga el login pueda obtener todos los datos del usuario y no solo el email.
+        $query = "SELECT * FROM " . $this->table_name . " WHERE email = :email";
+
+    //Limpiamos la variable de entrada para evitar inyecciones SQL y otros ataques. Deesta manera podemos aportar una capa de seguridad adicional a la aplicación.
+        $email_buscado = htmlspecialchars(strip_tags($email_buscado));
+
+    //Preparamos la consulta en la base de datos
+        $consulta = $this->conn->prepare($query);
+
+    //Vinculamos el parámetro de la consulta con el valor del email buscado
+        $consulta->bindParam(':email', $email_buscado);
+
+    //Ejecutamos la consulta y si se ejecuta correctamente, devolvemos los datos del usuario en un array asociativo.
+        if($consulta->execute()) {
+            return $consulta->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return false;
+    }
 }
 
 ?>
