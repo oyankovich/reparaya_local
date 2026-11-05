@@ -15,9 +15,12 @@ if (!isset($_SESSION['usuario_id'])) {
     <title>Mi perfil</title>
 </head>
 <body>
+    <?php require_once '../menu.php'; ?>
     <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?>!</h1>
     <p>Tu rol es: <?php echo htmlspecialchars($_SESSION['rol']); ?></p>
     <p><a href="interfazUsuario.php">Volver a la interfaz de usuario</a></p>
+
+    <a href="editarPerfil.php">Editar Perfil</a>
     
 </body>
 </html>

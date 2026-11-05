@@ -3,8 +3,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once '../modelo/usuario.php';
-require_once '../config/basedatos.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/APP_PHP_NATIVO(P2)/config/basedatos.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/APP_PHP_NATIVO(P2)/modelo/usuario.php';
 
 class ControladorUsuario {
     private $usuario;
@@ -68,16 +68,60 @@ class ControladorUsuario {
                 session_start();
             }
 
+            //Guardamos los datos del usuario en la sesión
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['rol'] = $usuario['rol'];
+            $_SESSION['email'] = $usuario['email'];
+            $_SESSION['telefono'] = $usuario['telefono'];
 
-            echo "Login exitoso. Bienvenido, " . $_SESSION['nombre'] . ". Tu rol es: " . $_SESSION['rol'] . ".";
+            //Reedireccionamos al perfil del usuario
+
+            header("Location: /APP_PHP_NATIVO(P2)/vista/Interfaces/perfil.php");
+            exit();
+
             } else {
                 echo "Correo electrónico o contraseña incorrectos.";
             }
         }
     }
+
+    public function editarPerfil() {
+        //Verificamos si se ha enviado el formulario de edición de perfil
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
+            if(empty($_POST['nombre']) || empty($_POST['email'])) {
+                echo "EL nombre y el correo electrónico son obligatorios.";
+                return;
+            }
+
+            //Asignamos los datos al objeto Usuario
+            $this->usuario->id = $_POST['usuario_id'];
+            $this->usuario->nombre = $_POST['nombre'];
+            $this->usuario->email = $_POST['email'];
+            $this->usuario->telefono = $_POST['telefono'] ?? '';
+
+            //Llamamos al método actualizarPerfil para actualizar los datos del usuario
+            if ($this->usuario->actualizarPerfil()) {
+                //Actualizamos la sesión con los nuevos datos
+                $_SESSION['nombre'] = $this->usuario->nombre;
+                $_SESSION['email'] = $this->usuario->email;
+                $_SESSION['telefono'] = $this->usuario->telefono;
+
+                header("Location: /APP_PHP_NATIVO(P2)/vista/Interfaces/perfil.php");
+                exit();
+                
+                } else {
+                echo "Error al actualizar el perfil.";
+            }
+        }
+    }
+
+
 }
 
 
@@ -87,5 +131,8 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'registro') {
 } elseif (isset($_POST['accion']) && $_POST['accion'] === 'login') {
     $controlador = new ControladorUsuario();
     $controlador->loginUsuario();
+} elseif (isset($_POST['accion']) && $_POST['accion'] === 'editarPerfil') {
+    $controlador = new ControladorUsuario();
+    $controlador->editarPerfil();
 }
 ?>

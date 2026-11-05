@@ -62,6 +62,46 @@ class Usuario {
 
         return false;
     }
+
+    public function actualizarPerfil() {
+        //Actualizamos nombre, email y teléfono.
+        //La contraseña la dejamos para otro método o lo incluimos si queremos que el usuario pueda cambiarla desde su perfil.
+        $query = "UPDATE " . $this->table_name . " SET nombre = :nombre, email = :email, telefono = :telefono WHERE id = :id";
+        $consulta = $this->conn->prepare($query);
+
+        //Limpiamos los datos de entrada para evitar inyecciones SQL y otros ataques.
+        $this->nombre = htmlspecialchars(strip_tags($this->nombre));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->telefono = htmlspecialchars(strip_tags($this->telefono));
+
+        //Vinculamos los parámetros de la consulta con los valores de las propiedades del objeto
+        $consulta->bindParam(':nombre', $this->nombre);
+        $consulta->bindParam(':email', $this->email);
+        $consulta->bindParam(':telefono', $this->telefono);
+        $consulta->bindParam(':id', $this->id);
+        
+        if($consulta->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function obtenerUsuarioPorId($id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
+        $consulta = $this->conn->prepare($query);
+
+        //Limpiamos el ID de entrada para evitar inyecciones SQL y otros ataques.
+        $id = htmlspecialchars(strip_tags($id));
+
+        //Vinculamos el parámetro de la consulta con el valor del ID
+        $consulta->bindParam(':id', $id);
+
+        if($consulta->execute()) {
+            return $consulta->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return false;
+    }
 }
 
 ?>
