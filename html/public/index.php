@@ -33,6 +33,18 @@ switch ($ruta) {
         $controlador = new IncidenciaController($conexion);
         $controlador->procesarIncidencia();
         break;
+
+    case 'detalle_incidencia':
+        require_once '../app/controllers/IncidenciaController.php';
+        $controlador = new IncidenciaController($conexion);
+        $controlador->verDetalle();
+        break;
+
+    case 'cancelar_incidencia':
+        require_once '../app/controllers/IncidenciaController.php';
+        $controlador = new IncidenciaController($conexion);
+        $controlador->cancelarIncidencia();
+        break;
         
     case 'registro':
         require_once '../app/controllers/AuthController.php';
@@ -62,6 +74,18 @@ switch ($ruta) {
         require_once '../app/controllers/AuthController.php';
         $controlador = new AuthController($conexion);
         $controlador->logout();
+        break;
+
+    case 'mi_perfil':
+        require_once '../app/controllers/ClienteController.php';
+        $controlador = new ClienteController($conexion);
+        $controlador->verPerfil();
+        break;
+
+    case 'actualizar_perfil':
+        require_once '../app/controllers/ClienteController.php';
+        $controlador = new ClienteController($conexion);
+        $controlador->actualizarPerfil();
         break;
 
     default:

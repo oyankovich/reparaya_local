@@ -22,7 +22,7 @@ class Incidencia {
             ':fecha_servicio' => $datos['fecha_servicio'],
             ':tipo_urgencia' => $datos['tipo_urgencia']
         ]);
-        
+
         return $this->db->lastInsertId();
     }
 
@@ -35,6 +35,25 @@ class Incidencia {
         $sentencia->execute([':cliente_id' => $cliente_id]);
         
         return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenerPorId($id, $cliente_id) {
+        $consulta = "SELECT * FROM incidencias WHERE id = :id AND cliente_id = :cliente_id";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([
+            ':id' => $id, 
+            ':cliente_id' => $cliente_id
+        ]);
+        return $sentencia->fetch(PDO::FETCH_ASSOC); 
+    }
+
+    public function actualizarEstado($id, $nuevo_estado) {
+        $consulta = "UPDATE incidencias SET estado = :estado WHERE id = :id";
+        $sentencia = $this->db->prepare($consulta);
+        return $sentencia->execute([
+            ':estado' => $nuevo_estado,
+            ':id' => $id
+        ]);
     }
 }
 ?>

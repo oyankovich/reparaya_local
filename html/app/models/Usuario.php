@@ -46,5 +46,31 @@ class Usuario {
         
         return $sentencia->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function obtenerPorId($id) {
+        $consulta = "SELECT * FROM usuarios WHERE id = :id";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([':id' => $id]);
+        return $sentencia->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function actualizarDatos($id, $nombre, $email) {
+        $consulta = "UPDATE usuarios SET nombre = :nombre, email = :email WHERE id = :id";
+        $sentencia = $this->db->prepare($consulta);
+        return $sentencia->execute([
+            ':nombre' => $nombre, 
+            ':email' => $email, 
+            ':id' => $id
+        ]);
+    }
+
+    public function actualizarPassword($id, $password_hash) {
+        $consulta = "UPDATE usuarios SET password = :password WHERE id = :id";
+        $sentencia = $this->db->prepare($consulta);
+        return $sentencia->execute([
+            ':password' => $password_hash, 
+            ':id' => $id
+        ]);
+    }
 }
 ?>
