@@ -14,9 +14,10 @@ if (session_status() == PHP_SESSION_NONE) {
         <?php if (isset($_SESSION['rol'])): ?>
             
             <!--Si es Administrador:-->
-            <?php if ($_SESSION['rol'] === 'administrador'): ?>
-                <li><a href="#">Panel de Administración</a></li>
-                <li><a href="#">Gestión de Técnicos</a></li>
+            <?php if ($_SESSION['rol'] === 'admin'): ?>
+                <li><a href="interfazAdmin.php">Panel de Administración</a></li>
+                <li><a href="gestionTecnicos.php">Gestión de Técnicos</a></li>
+                <li><a href="gestionServicios.php">Gestionar Servicios</a></li>
             <?php endif; ?>
 
             <!--Si es Técnico:-->
