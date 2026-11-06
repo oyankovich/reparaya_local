@@ -19,11 +19,9 @@ class ClienteController {
         $modelo = new Usuario($this->db);
         $id = $_SESSION['usuario_id'];
         
-        // Actualizar datos en disco duro y en memoria RAM (sesión)
         $modelo->actualizarDatos($id, trim($_POST['nombre']), trim($_POST['email']));
         $_SESSION['nombre'] = trim($_POST['nombre']);
 
-        // Actualizar contraseña solo si el cliente escribió algo
         if (!empty($_POST['password'])) {
             $modelo->actualizarPassword($id, password_hash($_POST['password'], PASSWORD_BCRYPT));
         }

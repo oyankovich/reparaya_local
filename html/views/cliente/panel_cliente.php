@@ -12,6 +12,7 @@
         <li><a href="../public/index.php?ruta=mis_incidencias">Ver mis incidencias</a></li>
     </ul>
     <br>
-    <a href="../public/index.php?ruta=logout">Cerrar Sesión</a>
+    <a href="../public/index.php?ruta=logout">Cerrar Sesión</a><br><br>
+    <a href="../public/index.php?ruta=mi_perfil">Modificar Datos Usuario</a>
 </body>
 </html>
