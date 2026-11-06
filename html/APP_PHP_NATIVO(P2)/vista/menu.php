@@ -26,7 +26,8 @@ if (session_status() == PHP_SESSION_NONE) {
 
             <!--Si es Cliente:-->
             <?php if ($_SESSION['rol'] === 'particular'): ?>
-                <li><a href="#">Nueva Solicitud</a></li>
+                <li><a href="nuevaIncidencia.php">Nueva Incidencia</a></li>
+                <li><a href="misIncidencias.php">Mis Incidencias</a></li>
             <?php endif; ?>
 
             <!--Para todos los roles:-->
