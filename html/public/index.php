@@ -15,6 +15,24 @@ switch ($ruta) {
         $controlador = new HomeController($conexion);
         $controlador->inicio();
         break;
+
+    case 'crear_incidencia':
+        require_once '../app/controllers/IncidenciaController.php';
+        $controlador = new IncidenciaController($conexion);
+        $controlador->mostrarFormularioCrear();
+        break;
+
+    case 'mis_incidencias':
+        require_once '../app/controllers/IncidenciaController.php';
+        $controlador = new IncidenciaController($conexion);
+        $controlador->listarMisIncidencias();
+        break;
+
+    case 'procesar_incidencia':
+        require_once '../app/controllers/IncidenciaController.php';
+        $controlador = new IncidenciaController($conexion);
+        $controlador->procesarIncidencia();
+        break;
         
     case 'registro':
         require_once '../app/controllers/AuthController.php';
