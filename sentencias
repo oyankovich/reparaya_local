@@ -75,3 +75,10 @@ CREATE TABLE historial_estados (
     FOREIGN KEY (incidencia_id) REFERENCES incidencias (id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
 );
+
+-- 3. Creción de la tabla especialidades necesaria para el funcionamiento de la tabla incidencias.
+INSERT INTO
+    especialidades (id, nombre_especialidad)
+VALUES (1, 'Fontanería'),
+    (2, 'Electricidad'),
+    (3, 'Climatización');
