@@ -47,6 +47,13 @@ class Incidencia {
         return $sentencia->fetch(PDO::FETCH_ASSOC); 
     }
 
+    public function obtenerPorIdGlobal($id) {
+        $consulta = "SELECT * FROM incidencias WHERE id = :id";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([':id' => $id]);
+        return $sentencia->fetch(PDO::FETCH_ASSOC); 
+    }
+
     public function actualizarEstado($id, $nuevo_estado) {
         $consulta = "UPDATE incidencias SET estado = :estado WHERE id = :id";
         $sentencia = $this->db->prepare($consulta);

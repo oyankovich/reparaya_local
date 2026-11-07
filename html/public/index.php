@@ -112,6 +112,24 @@ switch ($ruta) {
         $controlador->procesarAsignacion();
         break;
 
+    case 'admin_crear_incidencia':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->mostrarFormularioIncidencia();
+        break;
+
+    case 'admin_procesar_incidencia':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->procesarIncidenciaAdmin();
+        break;
+
+    case 'admin_cancelar_incidencia':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->cancelarIncidenciaAdmin();
+        break;
+
     default:
         echo "<h1>Error 404</h1>";
         echo "<p>El módulo solicitado no existe.</p>";
