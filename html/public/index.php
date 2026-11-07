@@ -88,6 +88,30 @@ switch ($ruta) {
         $controlador->actualizarPerfil();
         break;
 
+    case 'gestion_tecnicos':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->gestionarTecnicos();
+        break;
+
+    case 'panel_admin':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->verPanelGlobal();
+        break;
+
+    case 'crear_tecnico':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->crearTecnico();
+        break;
+
+    case 'asignar_tecnico':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->procesarAsignacion();
+        break;
+
     default:
         echo "<h1>Error 404</h1>";
         echo "<p>El módulo solicitado no existe.</p>";

@@ -82,3 +82,20 @@ INSERT INTO
 VALUES (1, 'Fontanería'),
     (2, 'Electricidad'),
     (3, 'Climatización');
+
+-- 3. Creción del usuario admin manualmente para poder ejercitar pruebas desde la pagina de admin.
+INSERT INTO
+    usuarios (
+        nombre,
+        email,
+        password,
+        telefono,
+        rol
+    )
+VALUES (
+        'admin',
+        'admin@reparaya.com',
+        '$2y$10$YHtTDQEjxSIr.UCLmj/JD.VN7UD4hMBOtJNzfdjxW3s1TmcMyaOYK',
+        '123456', -- la password es la misma que el numero de telefono (poner este numero durante el login)
+        'admin'
+    );

@@ -55,5 +55,32 @@ class Incidencia {
             ':id' => $id
         ]);
     }
+
+    public function obtenerTodasGlobal() {
+        $consulta = "SELECT i.*, 
+                            u.nombre AS cliente_nombre, 
+                            e.nombre_especialidad 
+                     FROM incidencias i
+                     LEFT JOIN usuarios u ON i.cliente_id = u.id
+                     LEFT JOIN especialidades e ON i.especialidad_id = e.id
+                     ORDER BY i.fecha_servicio ASC";
+        
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function asignarTecnico($incidencia_id, $tecnico_id) {
+        $consulta = "UPDATE incidencias 
+                     SET tecnico_id = :tecnico_id, estado = 'Asignada' 
+                     WHERE id = :id";
+        
+        $sentencia = $this->db->prepare($consulta);
+        return $sentencia->execute([
+            ':tecnico_id' => $tecnico_id,
+            ':id' => $incidencia_id
+        ]);
+    }
 }
 ?>
