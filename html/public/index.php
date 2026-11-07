@@ -87,7 +87,7 @@ switch ($ruta) {
         $controlador = new ClienteController($conexion);
         $controlador->actualizarPerfil();
         break;
-        
+
     // CRUD 3 - Gestión Admin
     case 'gestionar_incidencias':
         require_once '../app/controllers/AdminController.php';
@@ -111,6 +111,19 @@ switch ($ruta) {
         require_once '../app/controllers/AdminController.php';
         $controlador = new AdminController($conexion);
         $controlador->cancelarIncidencia();
+        break;
+
+    // CRUD 3 - Panel técnico
+    case 'incidencias_asignadas':
+        require_once '../app/controllers/TecnicoController.php';
+        $controlador = new TecnicoController($conexion);
+        $controlador->verAgenda();
+        break;
+
+    case 'tecnico_cambiar_estado':
+        require_once '../app/controllers/TecnicoController.php';
+        $controlador = new TecnicoController($conexion);
+        $controlador->cambiarEstado();
         break;
 
     default:
