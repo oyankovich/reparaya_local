@@ -143,4 +143,16 @@ class GestionIncidencia {
 
         return true;
     }
+
+    // Historial de la incidencia con el nombre de quien hizo cada cambio
+    public function obtenerHistorial($id) {
+        $consulta = "SELECT h.*, u.nombre AS usuario
+                     FROM historial_estados h
+                     JOIN usuarios u ON h.usuario_id = u.id
+                     WHERE h.incidencia_id = :id
+                     ORDER BY h.fecha_cambio, h.id";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([':id' => $id]);
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

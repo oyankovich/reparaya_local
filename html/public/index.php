@@ -87,6 +87,31 @@ switch ($ruta) {
         $controlador = new ClienteController($conexion);
         $controlador->actualizarPerfil();
         break;
+        
+    // CRUD 3 - Gestión Admin
+    case 'gestionar_incidencias':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->listarIncidencias();
+        break;
+
+    case 'admin_detalle':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->verDetalle();
+        break;
+
+    case 'admin_asignar':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->asignarTecnico();
+        break;
+
+    case 'admin_cancelar':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->cancelarIncidencia();
+        break;
 
     default:
         echo "<h1>Error 404</h1>";
