@@ -200,4 +200,33 @@ class GestionIncidencia {
 
         return $id;
     }
+
+        // Modificar una incidencia. Solo se puede si está Pendiente o Asignada
+    public function actualizarIncidencia($id, $datos) {
+        $incidencia = $this->obtenerPorId($id);
+
+        if (!$incidencia) {
+            return "La incidencia no existe.";
+        }
+
+        if ($incidencia['estado'] !== 'Pendiente' && $incidencia['estado'] !== 'Asignada') {
+            return "Solo se puede modificar una incidencia Pendiente o Asignada.";
+        }
+
+        $consulta = "UPDATE incidencias
+                     SET especialidad_id = :especialidad_id, descripcion = :descripcion, direccion = :direccion,
+                         fecha_servicio = :fecha_servicio, tipo_urgencia = :tipo_urgencia
+                     WHERE id = :id";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([
+            ':especialidad_id' => $datos['especialidad_id'],
+            ':descripcion' => $datos['descripcion'],
+            ':direccion' => $datos['direccion'],
+            ':fecha_servicio' => $datos['fecha_servicio'],
+            ':tipo_urgencia' => $datos['tipo_urgencia'],
+            ':id' => $id
+        ]);
+
+        return true;
+    }
 }

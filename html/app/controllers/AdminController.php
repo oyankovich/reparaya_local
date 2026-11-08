@@ -192,4 +192,82 @@ class AdminController {
         header("Location: ../public/index.php?ruta=admin_detalle&id=" . $id);
         exit;
     }
+
+        // Formulario para modificar una incidencia
+    public function mostrarEditar() {
+        $this->comprobarAdmin();
+
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        $incidencia = $this->modelo->obtenerPorId($id);
+
+        if (!$incidencia) {
+            $_SESSION['mensaje'] = "La incidencia no existe.";
+            header("Location: ../public/index.php?ruta=gestionar_incidencias");
+            exit;
+        }
+
+        if ($incidencia['estado'] !== 'Pendiente' && $incidencia['estado'] !== 'Asignada') {
+            $_SESSION['mensaje'] = "Solo se puede modificar una incidencia Pendiente o Asignada.";
+            header("Location: ../public/index.php?ruta=admin_detalle&id=" . $id);
+            exit;
+        }
+
+        $especialidades = $this->modelo->obtenerEspecialidades();
+        require_once '../views/admin/editar_incidencia.php';
+    }
+
+    // Guarda los cambios de la incidencia
+    public function guardarEdicion() {
+        $this->comprobarAdmin();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: ../public/index.php?ruta=gestionar_incidencias");
+            exit;
+        }
+
+        $id = (int)($_POST['id'] ?? 0);
+        $datos = [
+            'especialidad_id' => (int)($_POST['especialidad_id'] ?? 0),
+            'tipo_urgencia' => $_POST['tipo_urgencia'] ?? '',
+            'fecha_servicio' => $_POST['fecha_servicio'] ?? '',
+            'direccion' => trim($_POST['direccion'] ?? ''),
+            'descripcion' => trim($_POST['descripcion'] ?? '')
+        ];
+
+        $servicioValido = false;
+        foreach ($this->modelo->obtenerEspecialidades() as $especialidad) {
+            if ($especialidad['id'] == $datos['especialidad_id']) {
+                $servicioValido = true;
+            }
+        }
+
+        $fecha = strtotime($datos['fecha_servicio']);
+        $horasQueFaltan = ($fecha - time()) / 3600;
+        $error = '';
+
+        if (!$servicioValido) {
+            $error = "Elige un tipo de servicio válido.";
+        } elseif ($datos['tipo_urgencia'] !== 'Estándar' && $datos['tipo_urgencia'] !== 'Urgente') {
+            $error = "El nivel de urgencia no es válido.";
+        } elseif ($datos['direccion'] === '' || $datos['descripcion'] === '') {
+            $error = "Rellena la dirección y la descripción.";
+        } elseif ($fecha === false || $horasQueFaltan <= 0) {
+            $error = "La fecha tiene que ser posterior a ahora.";
+        } elseif ($datos['tipo_urgencia'] === 'Estándar' && $horasQueFaltan < 48) {
+            $error = "Las incidencias estándar necesitan al menos 48 horas de antelación.";
+        }
+
+        if ($error !== '') {
+            $_SESSION['mensaje'] = $error;
+            header("Location: ../public/index.php?ruta=admin_editar&id=" . $id);
+            exit;
+        }
+
+        $datos['fecha_servicio'] = date('Y-m-d H:i:s', $fecha);
+        $resultado = $this->modelo->actualizarIncidencia($id, $datos);
+        $_SESSION['mensaje'] = ($resultado === true) ? "Incidencia modificada correctamente." : $resultado;
+
+        header("Location: ../public/index.php?ruta=admin_detalle&id=" . $id);
+        exit;
+    }
 }

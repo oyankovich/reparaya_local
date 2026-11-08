@@ -22,6 +22,7 @@
     <p><strong>Técnico:</strong> <?php echo $incidencia['tecnico'] ? htmlspecialchars($incidencia['tecnico']) : 'Sin asignar'; ?></p>
 
     <?php if ($incidencia['estado'] === 'Pendiente' || $incidencia['estado'] === 'Asignada'): ?>
+        <p><a href="../public/index.php?ruta=admin_editar&id=<?php echo $incidencia['id']; ?>">Modificar incidencia</a></p>
         <h3>Asignar técnico</h3>
         <form method="POST" action="../public/index.php?ruta=admin_asignar">
             <input type="hidden" name="id" value="<?php echo $incidencia['id']; ?>">

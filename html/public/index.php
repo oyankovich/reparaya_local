@@ -144,6 +144,18 @@ switch ($ruta) {
         $controlador->guardarAlta();
         break;
 
+    case 'admin_editar':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->mostrarEditar();
+        break;
+
+    case 'admin_guardar_edicion':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->guardarEdicion();
+        break;
+
     default:
         echo "<h1>Error 404</h1>";
         echo "<p>El módulo solicitado no existe.</p>";
