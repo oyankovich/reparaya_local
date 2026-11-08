@@ -155,4 +155,49 @@ class GestionIncidencia {
         $sentencia->execute([':id' => $id]);
         return $sentencia->fetchAll(PDO::FETCH_ASSOC);
     }
+
+        // Clientes para elegir en el alta manual
+    public function obtenerClientes() {
+        $consulta = "SELECT id, nombre, email FROM usuarios WHERE rol = 'particular' ORDER BY nombre";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Tipos de servicio (fontanería, electricidad...)
+    public function obtenerEspecialidades() {
+        $consulta = "SELECT id, nombre_especialidad FROM especialidades ORDER BY nombre_especialidad";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Alta manual de un aviso por el admin. Empieza en Pendiente
+    public function crearIncidencia($datos, $usuario_id) {
+        // Mismo formato de código que el resto de la app: REP- y 8 caracteres
+        $localizador = 'REP-' . strtoupper(bin2hex(random_bytes(4)));
+
+        $consulta = "INSERT INTO incidencias
+                     (localizador, cliente_id, especialidad_id, descripcion, direccion, fecha_servicio, tipo_urgencia, estado)
+                     VALUES
+                     (:localizador, :cliente_id, :especialidad_id, :descripcion, :direccion, :fecha_servicio, :tipo_urgencia, 'Pendiente')";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([
+            ':localizador' => $localizador,
+            ':cliente_id' => $datos['cliente_id'],
+            ':especialidad_id' => $datos['especialidad_id'],
+            ':descripcion' => $datos['descripcion'],
+            ':direccion' => $datos['direccion'],
+            ':fecha_servicio' => $datos['fecha_servicio'],
+            ':tipo_urgencia' => $datos['tipo_urgencia']
+        ]);
+
+        $id = $this->db->lastInsertId();
+
+        // Primer registro del historial: se crea en Pendiente
+        $historial = new Historial($this->db);
+        $historial->registrar($id, null, 'Pendiente', $usuario_id);
+
+        return $id;
+    }
 }

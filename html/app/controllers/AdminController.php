@@ -95,7 +95,7 @@ class AdminController {
         header("Location: ../public/index.php?ruta=admin_detalle&id=" . $id);
         exit;
     }
-    
+
     // Calendario con todas las incidencias
     public function verCalendario() {
         $this->comprobarAdmin();
@@ -116,5 +116,80 @@ class AdminController {
         }
 
         require_once '../views/admin/calendario.php';
+    }
+
+        // Formulario de alta manual de avisos
+    public function mostrarAlta() {
+        $this->comprobarAdmin();
+
+        $clientes = $this->modelo->obtenerClientes();
+        $especialidades = $this->modelo->obtenerEspecialidades();
+        require_once '../views/admin/alta_incidencia.php';
+    }
+
+    // Guarda el aviso que crea el admin
+    public function guardarAlta() {
+        $this->comprobarAdmin();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: ../public/index.php?ruta=admin_alta");
+            exit;
+        }
+
+        $datos = [
+            'cliente_id' => (int)($_POST['cliente_id'] ?? 0),
+            'especialidad_id' => (int)($_POST['especialidad_id'] ?? 0),
+            'tipo_urgencia' => $_POST['tipo_urgencia'] ?? '',
+            'fecha_servicio' => $_POST['fecha_servicio'] ?? '',
+            'direccion' => trim($_POST['direccion'] ?? ''),
+            'descripcion' => trim($_POST['descripcion'] ?? '')
+        ];
+
+        // Comprobamos que el cliente y el servicio existen
+        $clienteValido = false;
+        foreach ($this->modelo->obtenerClientes() as $cliente) {
+            if ($cliente['id'] == $datos['cliente_id']) {
+                $clienteValido = true;
+            }
+        }
+
+        $servicioValido = false;
+        foreach ($this->modelo->obtenerEspecialidades() as $especialidad) {
+            if ($especialidad['id'] == $datos['especialidad_id']) {
+                $servicioValido = true;
+            }
+        }
+
+        $fecha = strtotime($datos['fecha_servicio']);
+        $horasQueFaltan = ($fecha - time()) / 3600;
+        $error = '';
+
+        if (!$clienteValido) {
+            $error = "Elige un cliente válido.";
+        } elseif (!$servicioValido) {
+            $error = "Elige un tipo de servicio válido.";
+        } elseif ($datos['tipo_urgencia'] !== 'Estándar' && $datos['tipo_urgencia'] !== 'Urgente') {
+            $error = "El nivel de urgencia no es válido.";
+        } elseif ($datos['direccion'] === '' || $datos['descripcion'] === '') {
+            $error = "Rellena la dirección y la descripción.";
+        } elseif ($fecha === false || $horasQueFaltan <= 0) {
+            $error = "La fecha tiene que ser posterior a ahora.";
+        } elseif ($datos['tipo_urgencia'] === 'Estándar' && $horasQueFaltan < 48) {
+            // Regla del enunciado: las estándar con 48 horas de antelación como mínimo
+            $error = "Las incidencias estándar necesitan al menos 48 horas de antelación.";
+        }
+
+        if ($error !== '') {
+            $_SESSION['mensaje'] = $error;
+            header("Location: ../public/index.php?ruta=admin_alta");
+            exit;
+        }
+
+        $datos['fecha_servicio'] = date('Y-m-d H:i:s', $fecha);
+        $id = $this->modelo->crearIncidencia($datos, $_SESSION['usuario_id']);
+
+        $_SESSION['mensaje'] = "Aviso creado correctamente.";
+        header("Location: ../public/index.php?ruta=admin_detalle&id=" . $id);
+        exit;
     }
 }

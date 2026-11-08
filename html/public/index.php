@@ -132,6 +132,18 @@ switch ($ruta) {
         $controlador->verCalendario();
         break;
 
+    case 'admin_alta':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->mostrarAlta();
+        break;
+
+    case 'admin_guardar_alta':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->guardarAlta();
+        break;
+
     default:
         echo "<h1>Error 404</h1>";
         echo "<p>El módulo solicitado no existe.</p>";
