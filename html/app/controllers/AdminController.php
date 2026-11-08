@@ -56,7 +56,9 @@ class AdminController {
         $modeloIncidencia = new Incidencia($this->db);
         $modeloTecnico = new Tecnico($this->db);
 
-        $incidencias = $modeloIncidencia->obtenerTodasGlobal();
+        $estado_filtro = isset($_GET['estado_filtro']) ? $_GET['estado_filtro'] : '';
+
+        $incidencias = $modeloIncidencia->obtenerTodasGlobal($estado_filtro);
         $tecnicos = $modeloTecnico->obtenerTodos();
 
         require_once '../views/admin/panel_admin.php';
@@ -79,8 +81,7 @@ class AdminController {
 
         $modeloIncidencia->asignarTecnico($incidencia_id, $tecnico_id);
 
-        $descripcion = "La avería ha sido asignada a un técnico y está a la espera de intervención.";
-        $modeloHistorial->registrar($incidencia_id, 'Asignada', $descripcion);
+        $modeloHistorial->registrar($incidencia_id, 'Pendiente', 'Asignada', $_SESSION['usuario_id']);
 
         header("Location: index.php?ruta=panel_admin&exito=asignada");
         exit;

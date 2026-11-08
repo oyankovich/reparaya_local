@@ -30,6 +30,19 @@
         <p style="color: red;"><strong>La incidencia ha sido cancelada correctamente.</strong></p>
     <?php endif; ?>
 
+    <form action="index.php" method="GET" style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 5px; display: inline-block;">
+        <input type="hidden" name="ruta" value="panel_admin">
+        <label for="estado_filtro"><strong>Filtrar por Estado:</strong></label>
+        <select name="estado_filtro" id="estado_filtro" onchange="this.form.submit()" style="padding: 5px; margin-left: 10px;">
+            <option value="">-- Todas las incidencias --</option>
+            <option value="Pendiente" <?php echo (isset($_GET['estado_filtro']) && $_GET['estado_filtro'] === 'Pendiente') ? 'selected' : ''; ?>>Pendientes</option>
+            <option value="Asignada" <?php echo (isset($_GET['estado_filtro']) && $_GET['estado_filtro'] === 'Asignada') ? 'selected' : ''; ?>>Asignadas</option>
+            <option value="En curso" <?php echo (isset($_GET['estado_filtro']) && $_GET['estado_filtro'] === 'En curso') ? 'selected' : ''; ?>>En curso</option>
+            <option value="Finalizada" <?php echo (isset($_GET['estado_filtro']) && $_GET['estado_filtro'] === 'Finalizada') ? 'selected' : ''; ?>>Finalizadas</option>
+            <option value="Cancelada" <?php echo (isset($_GET['estado_filtro']) && $_GET['estado_filtro'] === 'Cancelada') ? 'selected' : ''; ?>>Canceladas</option>
+        </select>
+    </form>
+
     <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; text-align: left;">
         <thead>
             <tr>

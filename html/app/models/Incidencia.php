@@ -63,19 +63,27 @@ class Incidencia {
         ]);
     }
 
-    public function obtenerTodasGlobal() {
-        $consulta = "SELECT i.*, 
-                            u.nombre AS cliente_nombre, 
-                            e.nombre_especialidad 
-                     FROM incidencias i
-                     LEFT JOIN usuarios u ON i.cliente_id = u.id
-                     LEFT JOIN especialidades e ON i.especialidad_id = e.id
-                     ORDER BY i.fecha_servicio ASC";
+    public function obtenerTodasGlobal($estado_filtro = '') {
+        $sql = "SELECT i.*, 
+                       u.nombre AS cliente_nombre, 
+                       e.nombre_especialidad 
+                FROM incidencias i 
+                INNER JOIN usuarios u ON i.cliente_id = u.id 
+                INNER JOIN especialidades e ON i.especialidad_id = e.id";
+                
+        if ($estado_filtro !== '') {
+            $sql .= " WHERE i.estado = :estado";
+        }
         
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
+        $sql .= " ORDER BY i.fecha_servicio ASC";
+        $consulta = $this->db->prepare($sql);
         
-        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        if ($estado_filtro !== '') {
+            $consulta->bindParam(':estado', $estado_filtro);
+        }
+        
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function asignarTecnico($incidencia_id, $tecnico_id) {
