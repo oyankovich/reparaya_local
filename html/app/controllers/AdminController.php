@@ -35,13 +35,35 @@ class AdminController {
 
         $nombre_completo = trim($_POST['nombre_completo']);
         $especialidad_id = $_POST['especialidad_id'];
-        
-        $usuario_id = !empty($_POST['usuario_id']) ? $_POST['usuario_id'] : null;
+        $email = trim($_POST['email']);
+        $password = $_POST['password'];
 
-        $modeloTecnico->crear($usuario_id, $nombre_completo, $especialidad_id);
+        $password_hashed = password_hash($password, PASSWORD_BCRYPT);
 
-        header("Location: index.php?ruta=gestion_tecnicos&exito=1");
-        exit;
+        try {
+            $this->db->beginTransaction();
+
+            $sqlUsuario = "INSERT INTO usuarios (nombre, email, password, rol) VALUES (:nombre, :email, :password, 'tecnico')";
+            $stmtUsuario = $this->db->prepare($sqlUsuario);
+            $stmtUsuario->execute([
+                ':nombre' => $nombre_completo,
+                ':email' => $email,
+                ':password' => $password_hashed
+            ]);
+
+            $nuevo_usuario_id = $this->db->lastInsertId();
+
+            $modeloTecnico->crear($nuevo_usuario_id, $nombre_completo, $especialidad_id);
+
+            $this->db->commit();
+
+            header("Location: index.php?ruta=gestion_tecnicos&exito=1");
+            exit;
+
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            die("Error crítico: Es posible que el email ya esté en uso o haya un problema en la base de datos.");
+        }
     }
 
     public function verPanelGlobal() {

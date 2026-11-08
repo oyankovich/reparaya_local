@@ -140,5 +140,17 @@ switch ($ruta) {
         echo "<h1>Error 404</h1>";
         echo "<p>El módulo solicitado no existe.</p>";
         break;
+
+    case 'panel_tecnico':
+        require_once '../app/controllers/TecnicoController.php';
+        $controlador = new TecnicoController($conexion);
+        $controlador->verPanel();
+        break;
+
+    case 'tecnico_cambiar_estado':
+        require_once '../app/controllers/TecnicoController.php';
+        $controlador = new TecnicoController($conexion);
+        $controlador->procesarEstado();
+        break;
 }
 ?>

@@ -20,7 +20,8 @@ class HomeController {
             exit;
             
         } elseif ($rolUsuario === 'tecnico') {
-            require_once '../views/tecnico/panel_tecnico.php';
+            header("Location: index.php?ruta=panel_tecnico");
+            exit;
             
         } else {
             require_once '../views/cliente/panel_cliente.php';

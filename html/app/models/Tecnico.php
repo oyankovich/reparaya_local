@@ -25,5 +25,12 @@ class Tecnico {
             ':especialidad_id' => $especialidad_id
         ]);
     }
+
+    public function obtenerPorUsuarioId($usuario_id) {
+        $consulta = "SELECT * FROM tecnicos WHERE usuario_id = :usuario_id";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([':usuario_id' => $usuario_id]);
+        return $sentencia->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

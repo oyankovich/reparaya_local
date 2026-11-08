@@ -97,5 +97,20 @@ class Incidencia {
             ':id' => $incidencia_id
         ]);
     }
+
+    public function obtenerPorTecnico($tecnico_id) {
+        $consulta = "SELECT i.*, 
+                            u.nombre AS cliente_nombre, 
+                            e.nombre_especialidad 
+                     FROM incidencias i 
+                     LEFT JOIN usuarios u ON i.cliente_id = u.id 
+                     LEFT JOIN especialidades e ON i.especialidad_id = e.id 
+                     WHERE i.tecnico_id = :tecnico_id 
+                     ORDER BY i.fecha_servicio ASC";
+        
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute([':tecnico_id' => $tecnico_id]);
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

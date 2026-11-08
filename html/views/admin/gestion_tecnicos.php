@@ -30,10 +30,15 @@
             </select>
         </p>
 
-        <p>
-            <label>ID de Usuario</label><br>
-            <input type="number" name="usuario_id" placeholder="Ej: 5">
-        </p>
+        <div style="margin-bottom: 15px;">
+            <label for="email"><strong>Email:</strong></label><br>
+            <input type="email" name="email" id="email" required style="padding: 8px;" placeholder="ej: tecnico@reparaya.com">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="password"><strong>Contraseña Inicial:</strong></label><br>
+            <input type="text" name="password" id="password" required style="padding: 8px;">
+        </div>
 
         <button type="submit">Guardar Técnico</button>
     </form>
