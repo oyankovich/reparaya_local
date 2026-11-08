@@ -7,7 +7,11 @@ class Tecnico {
     }
 
     public function obtenerTodos() {
-        $consulta = "SELECT * FROM tecnicos ORDER BY nombre_completo ASC";
+        $consulta = "SELECT t.*, e.nombre_especialidad 
+                     FROM tecnicos t 
+                     LEFT JOIN especialidades e ON t.especialidad_id = e.id 
+                     ORDER BY t.nombre_completo ASC";
+        
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         return $sentencia->fetchAll(PDO::FETCH_ASSOC);

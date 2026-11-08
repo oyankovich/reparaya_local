@@ -28,8 +28,9 @@ class IncidenciaController {
         
         $diferencia_horas = ($fecha_cita_segundos - $tiempo_actual_segundos) / 3600;
 
-        if ($tipo_urgencia === 'Estándar' && $diferencia_horas < 48) {
-            die("Bloqueo del Servidor: Las solicitudes de tipo Estándar exigen un mínimo de 48 horas de antelación.");
+        if ($tipo_urgencia === 'Estandar' && $diferencia_horas < 48) {
+            header("Location: ../public/index.php?ruta=crear_incidencia&error=48h");
+            exit;
         }
 
         $localizador = 'REP-' . strtoupper(substr(uniqid(), -8));

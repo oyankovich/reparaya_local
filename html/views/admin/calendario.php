@@ -2,60 +2,86 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario de Incidencias - ReparaYa</title>
-    
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold" href="index.php?ruta=panel_admin">ReparaYa | Panel de Administracion</a>
+            
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?ruta=admin_crear_incidencia">Crear Nueva Incidencia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?ruta=gestion_tecnicos">Gestion de Tecnicos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.php?ruta=calendario_admin">Ver Calendario</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center text-white">
+                    <span class="me-3">Admin: <span class="text-info fw-bold"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span></span>
+                    <a href="index.php?ruta=logout" class="btn btn-outline-danger btn-sm">Cerrar Sesion</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-secondary mb-0">Calendario de Intervenciones</h3>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-4">
+                <div id="calendario"></div>
+            </div>
+        </div>
+        
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendario');
-
+            
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
+                initialView: 'dayGridMonth', 
                 locale: 'es',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Dia'
+                },
                 events: <?php echo $eventos_json; ?>,
                 
                 eventClick: function(info) {
                     var props = info.event.extendedProps;
-                    var fecha = info.event.start.toLocaleString('es-ES');
                     
-                    alert(
-                        "DETALLE DE LA AVERÍA\n\n" +
-                        "Estado/Tipo: " + info.event.title + "\n" +
-                        "Fecha: " + fecha + "\n" +
-                        "Cliente: " + props.cliente + "\n" +
-                        "Especialidad: " + props.especialidad + "\n" +
-                        "Dirección: " + props.direccion + "\n" +
-                        "Descripción: " + props.descripcion
-                    );
+                    var detalles = "Estado y Urgencia: " + info.event.title + "\n\n" +
+                                   "Cliente: " + props.cliente + "\n" +
+                                   "Direccion: " + props.direccion + "\n" +
+                                   "Especialidad: " + props.especialidad + "\n\n" +
+                                   "Descripcion:\n" + props.descripcion;
+                                   
+                    alert(detalles);
                 }
             });
-
+            
             calendar.render();
         });
     </script>
-
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        #calendario { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    </style>
-</head>
-<body style="background: #f4f4f9;">
-    
-    <div style="max-width: 1000px; margin: 0 auto 20px auto;">
-        <h2>Planificación de Servicios (Calendario)</h2>
-        <a href="index.php?ruta=panel_admin" style="padding: 10px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">← Volver al Panel Global</a>
-        
-        <span style="margin-left: 20px; padding: 5px 10px; background: #dc3545; color: white; border-radius: 3px;">■ Urgentes</span>
-        <span style="margin-left: 10px; padding: 5px 10px; background: #0d6efd; color: white; border-radius: 3px;">■ Estándar</span>
-    </div>
-
-    <div id="calendario"></div>
-
 </body>
 </html>

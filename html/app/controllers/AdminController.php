@@ -78,7 +78,10 @@ class AdminController {
         $modeloIncidencia = new Incidencia($this->db);
         $modeloTecnico = new Tecnico($this->db);
 
-        $estado_filtro = isset($_GET['estado_filtro']) ? $_GET['estado_filtro'] : '';
+        $estado_filtro = '';
+        if (isset($_GET['estado']) && $_GET['estado'] !== 'Todos') {
+            $estado_filtro = $_GET['estado'];
+        }
 
         $incidencias = $modeloIncidencia->obtenerTodasGlobal($estado_filtro);
         $tecnicos = $modeloTecnico->obtenerTodos();
@@ -132,6 +135,17 @@ class AdminController {
             exit;
         }
 
+        $tipo_urgencia = $_POST['tipo_urgencia'];
+        $fecha_cita_segundos = strtotime($_POST['fecha_servicio']);
+        $tiempo_actual_segundos = time();
+        
+        $diferencia_horas = ($fecha_cita_segundos - $tiempo_actual_segundos) / 3600;
+
+        if ($tipo_urgencia === 'Estandar' && $diferencia_horas < 48) {
+            header("Location: index.php?ruta=admin_crear_incidencia&error=48h");
+            exit;
+        }
+
         require_once '../app/models/Incidencia.php';
         require_once '../app/models/Historial.php';
         $modeloIncidencia = new Incidencia($this->db);
@@ -146,7 +160,7 @@ class AdminController {
             'descripcion' => $_POST['descripcion'],
             'direccion' => $_POST['direccion'],
             'fecha_servicio' => $_POST['fecha_servicio'],
-            'tipo_urgencia' => $_POST['tipo_urgencia']
+            'tipo_urgencia' => $tipo_urgencia
         ];
 
         try {
@@ -159,7 +173,7 @@ class AdminController {
             exit;
         } catch (PDOException $e) {
             $this->db->rollBack();
-            die("Error crítico al crear la incidencia manual.");
+            die("Error critico al crear la incidencia manual.");
         }
     }
 
