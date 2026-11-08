@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>Gestión de incidencias</h1>
+    <p><a href="../public/index.php?ruta=admin_calendario">Ver calendario</a></p>
 
     <?php if (!empty($_SESSION['mensaje'])): ?>
         <p><strong><?php echo htmlspecialchars($_SESSION['mensaje']); ?></strong></p>

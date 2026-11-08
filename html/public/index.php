@@ -126,6 +126,12 @@ switch ($ruta) {
         $controlador->cambiarEstado();
         break;
 
+    case 'admin_calendario':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->verCalendario();
+        break;
+
     default:
         echo "<h1>Error 404</h1>";
         echo "<p>El módulo solicitado no existe.</p>";

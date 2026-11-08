@@ -95,4 +95,26 @@ class AdminController {
         header("Location: ../public/index.php?ruta=admin_detalle&id=" . $id);
         exit;
     }
+    
+    // Calendario con todas las incidencias
+    public function verCalendario() {
+        $this->comprobarAdmin();
+
+        $incidencias = $this->modelo->obtenerTodas();
+        $eventos = [];
+
+        foreach ($incidencias as $inc) {
+            $eventos[] = [
+                // El estado va en el título para que no dependa solo del color
+                'title' => $inc['localizador'] . ' - ' . $inc['estado'],
+                'start' => date('Y-m-d\TH:i:s', strtotime($inc['fecha_servicio'])),
+                // Rojo para urgentes, azul para estándar
+                'color' => ($inc['tipo_urgencia'] === 'Urgente') ? '#d9534f' : '#337ab7',
+                // Al hacer clic se abre el detalle
+                'url' => '../public/index.php?ruta=admin_detalle&id=' . $inc['id']
+            ];
+        }
+
+        require_once '../views/admin/calendario.php';
+    }
 }
