@@ -16,6 +16,9 @@
          
         <a href="index.php?ruta=logout" style="padding: 10px; background: #ffcccc; border: 1px solid #cc0000; text-decoration: none; color: black; margin-left: 20px;"
         >Cerrar Sesión</a>
+
+        <a href="index.php?ruta=calendario_admin" style="padding: 10px; background: #17a2b8; border: 1px solid #117a8b; text-decoration: none; color: white; margin-left: 20px;"
+        >Ver Calendario</a>
     </nav>
 
     <hr>

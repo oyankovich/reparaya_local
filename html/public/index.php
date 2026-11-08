@@ -130,6 +130,12 @@ switch ($ruta) {
         $controlador->cancelarIncidenciaAdmin();
         break;
 
+    case 'calendario_admin':
+        require_once '../app/controllers/AdminController.php';
+        $controlador = new AdminController($conexion);
+        $controlador->verCalendario();
+        break;
+
     default:
         echo "<h1>Error 404</h1>";
         echo "<p>El módulo solicitado no existe.</p>";

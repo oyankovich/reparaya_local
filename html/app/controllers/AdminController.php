@@ -173,5 +173,42 @@ class AdminController {
             die("Error en transacción al cancelar (Admin).");
         }
     }
+
+    public function verCalendario() {
+        if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'admin') {
+            header("Location: index.php?ruta=inicio");
+            exit;
+        }
+
+        require_once '../app/models/Incidencia.php';
+        $modeloIncidencia = new Incidencia($this->db);
+        
+        $incidencias = $modeloIncidencia->obtenerTodasGlobal();
+
+        $eventos = [];
+        foreach ($incidencias as $incidencia) {
+            
+            $color = ($incidencia['tipo_urgencia'] === 'Urgente') ? '#dc3545' : '#0d6efd';
+
+            $titulo_evento = $incidencia['estado'] . ' | ' . $incidencia['tipo_urgencia'];
+
+            $eventos[] = [
+                'id' => $incidencia['id'],
+                'title' => $titulo_evento,
+                'start' => $incidencia['fecha_servicio'],
+                'color' => $color,
+                'extendedProps' => [
+                    'cliente' => $incidencia['cliente_nombre'],
+                    'direccion' => $incidencia['direccion'],
+                    'especialidad' => $incidencia['nombre_especialidad'],
+                    'descripcion' => $incidencia['descripcion']
+                ]
+            ];
+        }
+
+        $eventos_json = json_encode($eventos);
+
+        require_once '../views/admin/calendario.php';
+    }
 }
 ?>
