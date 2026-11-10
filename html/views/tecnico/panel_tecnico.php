@@ -52,7 +52,7 @@
                                     
                                     <td>
                                         <span class="badge bg-light text-dark border">
-                                            📅 <?php echo date('d/m/Y H:i', strtotime($incidencia['fecha_servicio'])); ?>
+                                            <?php echo date('d/m/Y H:i', strtotime($incidencia['fecha_servicio'])); ?>
                                         </span>
                                     </td>
                                     
@@ -93,13 +93,13 @@
                                             <form action="index.php?ruta=tecnico_cambiar_estado" method="POST" class="m-0">
                                                 <input type="hidden" name="incidencia_id" value="<?php echo $incidencia['id']; ?>">
                                                 <input type="hidden" name="accion" value="iniciar">
-                                                <button type="submit" class="btn btn-warning btn-sm fw-bold shadow-sm">▶️ Empezar Trabajo</button>
+                                                <button type="submit" class="btn btn-warning btn-sm fw-bold shadow-sm">Empezar Trabajo</button>
                                             </form>
                                         <?php elseif ($incidencia['estado'] === 'En curso'): ?>
                                             <form action="index.php?ruta=tecnico_cambiar_estado" method="POST" class="m-0">
                                                 <input type="hidden" name="incidencia_id" value="<?php echo $incidencia['id']; ?>">
                                                 <input type="hidden" name="accion" value="finalizar">
-                                                <button type="submit" class="btn btn-success btn-sm fw-bold shadow-sm">✅ Finalizar</button>
+                                                <button type="submit" class="btn btn-success btn-sm fw-bold shadow-sm">Finalizar</button>
                                             </form>
                                         <?php elseif ($incidencia['estado'] === 'Finalizada'): ?>
                                             <button class="btn btn-outline-success btn-sm disabled" tabindex="-1">Completado</button>
