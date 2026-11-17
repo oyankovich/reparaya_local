@@ -37,6 +37,14 @@
                                 <span class="badge bg-secondary fs-6"><?php echo htmlspecialchars($incidencia['estado']); ?></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between px-0">
+                                <strong>Tipo de Servicio:</strong> 
+                                <span><?php echo htmlspecialchars($incidencia['nombre_especialidad'] ?? 'General'); ?></span>
+                             </li>
+                             <li class="list-group-item d-flex justify-content-between px-0">
+                                <strong>Precio Base:</strong> 
+                                <span class="fw-bold text-success"><?php echo number_format((float)($incidencia['precio_base'] ?? 0), 2, ',', '.'); ?> €</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between px-0">
                                 <strong>Urgencia:</strong> 
                                 <span><?php echo htmlspecialchars($incidencia['tipo_urgencia']); ?></span>
                             </li>

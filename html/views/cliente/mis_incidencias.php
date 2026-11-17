@@ -37,6 +37,8 @@
                         <thead class="table-primary">
                             <tr>
                                 <th>Localizador</th>
+                                <th>Servicio</th>
+                                <th>Precio Base</th>
                                 <th>Fecha de Cita</th>
                                 <th>Urgencia</th>
                                 <th>Estado Actual</th>
@@ -48,6 +50,14 @@
                                 <tr>
                                     <td class="fw-bold text-secondary">
                                         <?php echo htmlspecialchars($incidencia['localizador']); ?>
+                                    </td>
+
+                                    <td>
+                                        <?php echo htmlspecialchars($incidencia['nombre_especialidad'] ?? 'General'); ?>
+                                    </td>
+
+                                    <td class="fw-bold text-success">
+                                        <?php echo number_format((float)($incidencia['precio_base'] ?? 0), 2, ',', '.'); ?> €
                                     </td>
                                     
                                     <td>

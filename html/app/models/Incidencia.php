@@ -27,9 +27,13 @@ class Incidencia {
     }
 
     public function obtenerPorCliente($cliente_id) {
-        $consulta = "SELECT * FROM incidencias 
-                     WHERE cliente_id = :cliente_id 
-                     ORDER BY fecha_servicio DESC";
+        $consulta = "SELECT i.*, 
+                            e.nombre_especialidad, 
+                            e.precio_base 
+                     FROM incidencias i 
+                     LEFT JOIN especialidades e ON i.especialidad_id = e.id 
+                     WHERE i.cliente_id = :cliente_id 
+                     ORDER BY i.fecha_servicio DESC";
         
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute([':cliente_id' => $cliente_id]);
@@ -38,7 +42,13 @@ class Incidencia {
     }
 
     public function obtenerPorId($id, $cliente_id) {
-        $consulta = "SELECT * FROM incidencias WHERE id = :id AND cliente_id = :cliente_id";
+        $consulta = "SELECT i.*, 
+                            e.nombre_especialidad, 
+                            e.precio_base 
+                     FROM incidencias i 
+                     LEFT JOIN especialidades e ON i.especialidad_id = e.id 
+                     WHERE i.id = :id AND i.cliente_id = :cliente_id";
+                     
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute([
             ':id' => $id, 
@@ -48,7 +58,13 @@ class Incidencia {
     }
 
     public function obtenerPorIdGlobal($id) {
-        $consulta = "SELECT * FROM incidencias WHERE id = :id";
+        $consulta = "SELECT i.*, 
+                            e.nombre_especialidad, 
+                            e.precio_base 
+                     FROM incidencias i 
+                     LEFT JOIN especialidades e ON i.especialidad_id = e.id 
+                     WHERE i.id = :id";
+                     
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute([':id' => $id]);
         return $sentencia->fetch(PDO::FETCH_ASSOC); 
@@ -66,7 +82,8 @@ class Incidencia {
     public function obtenerTodasGlobal($estado_filtro = '') {
         $sql = "SELECT i.*, 
                        u.nombre AS cliente_nombre, 
-                       e.nombre_especialidad 
+                       e.nombre_especialidad, 
+                       e.precio_base 
                 FROM incidencias i 
                 INNER JOIN usuarios u ON i.cliente_id = u.id 
                 INNER JOIN especialidades e ON i.especialidad_id = e.id";
@@ -101,7 +118,8 @@ class Incidencia {
     public function obtenerPorTecnico($tecnico_id) {
         $consulta = "SELECT i.*, 
                             u.nombre AS cliente_nombre, 
-                            e.nombre_especialidad 
+                            e.nombre_especialidad, 
+                            e.precio_base 
                      FROM incidencias i 
                      LEFT JOIN usuarios u ON i.cliente_id = u.id 
                      LEFT JOIN especialidades e ON i.especialidad_id = e.id 
