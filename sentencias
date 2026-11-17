@@ -99,3 +99,13 @@ VALUES (
         '123456', -- la password es la misma que el numero de telefono (poner este numero durante el login)
         'admin'
     );
+
+-- 4. Creción de columna precio_base en especialidades manualmente para poder reflejarlo de manera dinamica en las vistas.
+ALTER TABLE especialidades
+ADD COLUMN precio_base DECIMAL(8, 2) NOT NULL DEFAULT 50.00;
+
+UPDATE especialidades SET precio_base = 60.00 WHERE id = 1;
+
+UPDATE especialidades SET precio_base = 65.00 WHERE id = 2;
+
+UPDATE especialidades SET precio_base = 85.00 WHERE id = 3;
