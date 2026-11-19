@@ -28,8 +28,7 @@ class Incidencia extends Model
     protected function casts(): array
     {
         return [
-            'fecha_hora_cita' => 'datetime',
-            'fecha_creacion' => 'datetime',
+            'fecha_servicio' => 'datetime',
         ];
     }
 
